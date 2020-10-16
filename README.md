@@ -8,5 +8,7 @@ cp tpsid.conf ${sysconfdir}/modules-load.d/
 to load sooner.
 
 Provides
+```
 /proc/tpsid - ID in binary representation
 /proc/tpsidt - ID in text representation
+```
