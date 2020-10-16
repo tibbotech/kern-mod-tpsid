@@ -12,3 +12,4 @@ Provides
 /proc/tpsid - ID in binary representation
 /proc/tpsidt - ID in text representation
 ```
+On am335x is got from FUSE emac, on sp7021 it git from eth0 OTP mac.
