@@ -6,3 +6,7 @@ The module is loaded by compatible="tpsid" dts node, but it is out-of-tree, so b
 cp tpsid.conf ${sysconfdir}/modules-load.d/
 ```
 to load sooner.
+
+Provides
+/proc/tpsid - ID in binary representation
+/proc/tpsidt - ID in text representation
