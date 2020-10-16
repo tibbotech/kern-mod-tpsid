@@ -6,7 +6,7 @@
 #define M_AUT "Dvorkin Dmitry dvorkin@tibbo.com"
 #define M_NAM "Tibbo TPSid module"
 #define M_ORG "Tibbo Tech."
-#define M_CPR "(C) 2015-2020"
+#define M_CPR "(C) 2020"
 
 #include "tpsid_syshdrs.h"
 #include "tpsid_defs.h"
