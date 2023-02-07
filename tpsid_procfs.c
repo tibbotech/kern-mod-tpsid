@@ -24,21 +24,39 @@ static int dv_pf_Rt( struct file *_f, char __user *_buf, size_t _s, loff_t *_l) 
  *_l += ret = TPSID_LEN*2;
  return( ret);  }
 
-static struct file_operations fo_I;	// on/off
-static struct file_operations fo_It;	// text representation
+// fo_I: on/off
+// fo_It: text representation
+#if ( LINUX_VERSION_CODE >= KERNEL_VERSION(5,6,0))
+static const struct proc_ops fo_I = {
+ .proc_open = dv_pf_open,
+ .proc_lseek =  no_llseek,
+ .proc_release = dv_pf_release,
+ .proc_read = dv_pf_R,
+ .proc_write = dv_pf_W,
+};
+static struct proc_ops fo_It;
+#else
+static const struct file_operations fo_I = {
+ .owner = THIS_MODULE,
+ .open = dv_pf_open,
+ .llseek =  no_llseek,
+ .release = dv_pf_release,
+ .read = dv_pf_R,
+ .write = dv_pf_W,
+};
+static struct file_operations fo_It;
+#endif
 
 // ---------- main (exported) functions
 void tpsid_procfs_init( void) {
  struct proc_dir_entry *tfs, *tfst;
  char tmps[ 10];
- // register procfs entry
- fo_It.owner 	= fo_I.owner = THIS_MODULE;
- fo_It.open 	= fo_I.open = dv_pf_open;
- fo_It.llseek 	= fo_I.llseek =  no_llseek;
- fo_It.release 	= fo_I.release = dv_pf_release;
- fo_It.write 	= fo_I.write = dv_pf_W;
- fo_I.read 	= dv_pf_R;
- fo_It.read 	= dv_pf_Rt;
+ fo_It = fo_I;
+#if ( LINUX_VERSION_CODE >= KERNEL_VERSION(5,6,0))
+ fo_It.proc_read = dv_pf_Rt;
+#else
+ fo_It.read = dv_pf_Rt;
+#endif
  memset( tmps, 0, 10);
  sprintf( tmps, "%s", MNAME);
  tfs  = proc_create_data( tmps, 0, NULL, &fo_I, NULL);
